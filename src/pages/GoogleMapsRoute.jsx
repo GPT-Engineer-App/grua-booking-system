@@ -24,16 +24,23 @@ const GoogleMapsRoute = () => {
       if (response.status === 'OK') {
         setResponse(response);
       } else {
-        console.log('response: ', response);
+        console.error('Directions request failed due to ', response.status);
       }
+    } else {
+      console.error('Directions request failed with no response');
     }
   };
 
   const handleMapClick = (event) => {
+    console.log('Map clicked at: ', event.latLng.lat(), event.latLng.lng());
     if (!origin) {
-      setOrigin({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+      const newOrigin = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+      setOrigin(newOrigin);
+      console.log('Origin set to: ', newOrigin);
     } else if (!destination) {
-      setDestination({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+      const newDestination = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+      setDestination(newDestination);
+      console.log('Destination set to: ', newDestination);
     }
   };
 
@@ -49,7 +56,7 @@ const GoogleMapsRoute = () => {
 
   return (
     <Box>
-      <LoadScript googleMapsApiKey="AIzaSyAsVBklZwWs-3nQ3vVaWTANaYN70bGkIrA">
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
